@@ -5,10 +5,9 @@ namespace Scheduler
 {
     class Program
     {
-        static UI UI = new UI();
         static void Main(string[] args)
         {
-            Task.Run(UI.Welcome).Wait();
+            Task.Run(new UI().Welcome).Wait();
         }
     }
 }
