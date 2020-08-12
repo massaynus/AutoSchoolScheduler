@@ -10,7 +10,6 @@ namespace Scheduler
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Person> People { get; set; }
-        public DbSet<PersonType> PersonTypes { get; set; }
         public DbSet<ClassRoom> ClassRooms { get; set; }
         public DbSet<Equipement> Equipements { get; set; }
 
@@ -52,11 +51,6 @@ namespace Scheduler
                 .HasOne(tm => tm.Module)
                 .WithMany(m => m.ModuleTeachers)
                 .HasForeignKey(tm => tm.ModuleID);
-
-            modelBuilder.Entity<Person>()
-                .HasOne(p => p.Type)
-                .WithMany(p => p.People)
-                .HasForeignKey(p => p.TypeID);
 
             modelBuilder.Entity<ClassRoomEquipement>()
                 .HasOne(c => c.Room)

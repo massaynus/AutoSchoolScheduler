@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler;
 
 namespace Scheduler.Migrations
 {
     [DbContext(typeof(SchedulerContext))]
-    partial class SchedulerContextModelSnapshot : ModelSnapshot
+    [Migration("20200812231802_NullForeignKeys")]
+    partial class NullForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,11 +184,43 @@ namespace Scheduler.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TypeID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("TypeID");
 
                     b.ToTable("People");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Person");
+                });
+
+            modelBuilder.Entity("Scheduler.PersonType", b =>
+                {
+                    b.Property<int>("PTID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PTID");
+
+                    b.ToTable("PersonTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            PTID = 1,
+                            Name = "Teacher"
+                        },
+                        new
+                        {
+                            PTID = 2,
+                            Name = "Student"
+                        });
                 });
 
             modelBuilder.Entity("Scheduler.TeacherModule", b =>
@@ -267,6 +301,13 @@ namespace Scheduler.Migrations
                         .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Scheduler.Person", b =>
+                {
+                    b.HasOne("Scheduler.PersonType", "Type")
+                        .WithMany("People")
+                        .HasForeignKey("TypeID");
                 });
 
             modelBuilder.Entity("Scheduler.TeacherModule", b =>

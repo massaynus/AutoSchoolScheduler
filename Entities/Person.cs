@@ -13,8 +13,5 @@ namespace Scheduler
         public string Adresse { get; set; }
         public string GSM { get; set; }
         public string Email { get; set; }
-
-        public int TypeID { get; set; }
-        public PersonType Type { get; set; }
     }
 }
