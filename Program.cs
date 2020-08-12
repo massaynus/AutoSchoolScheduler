@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Scheduler
 {
     class Program
     {
+        static UI UI = new UI();
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Task.Run(UI.Welcome).Wait();
         }
     }
 }
